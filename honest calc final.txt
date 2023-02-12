@@ -1,0 +1,123 @@
+def is_one_digit(v):
+    if -10 < v < 10 and v.is_integer():
+        return True
+    return False
+
+
+def check(v1, v2, v3):
+    msg = ""
+    if is_one_digit(v1) and is_one_digit(v2):
+        msg = msg + msg_6
+    if (v1 == 1 or v2 == 1) and v3 == "*":
+        msg = msg + msg_7
+    if (v1 == 0 or v2 == 0) and (v3 == "*" or v3 == "+" or v3 == "-"):
+        msg = msg + msg_8
+    if msg != "":
+        msg = msg_9 + msg
+        print(msg)
+
+
+msg_0 = "Enter an equation"
+msg_1 = "Do you even know what numbers are? Stay focused!"
+msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+msg_3 = "Yeah... division by zero. Smart move..."
+msg_4 = "Do you want to store the result? (y / n):"
+msg_5 = "Do you want to continue calculations? (y / n):"
+msg_6 = " ... lazy"
+msg_7 = " ... very lazy"
+msg_8 = " ... very, very lazy"
+msg_9 = "You are"
+msg_10 = "Are you sure? It is only one digit! (y / n)"
+msg_11 = "Don't be silly! It's just one number! Add to the memory? (y / n)"
+msg_12 = "Last chance! Do you really want to embarrass yourself? (y / n)"
+
+memory = 0.0
+
+while True:
+    print(msg_0)
+    calc = input()
+    calc_list = calc.split(" ")
+
+    if len(calc_list) != 3:
+        print(msg_1)
+        continue
+
+    x_str = calc_list[0]
+    oper = calc_list[1]
+    y_str = calc_list[2]
+
+    if x_str == "M":
+        x = memory
+    else:
+        try:
+            x = float(x_str)
+        except ValueError:
+            print(msg_1)
+            continue
+
+    if y_str == "M":
+        y = memory
+    else:
+        try:
+            y = float(y_str)
+        except ValueError:
+            print(msg_1)
+            continue
+
+    check(x, y, oper)
+
+    if oper == "+":
+        result = x + y
+    elif oper == "-":
+        result = x - y
+    elif oper == "*":
+        result = x * y
+    elif oper == "/":
+        if y == 0:
+            print(msg_3)
+            continue
+        result = x / y
+    else:
+        print(msg_2)
+        continue
+
+    print(result)
+    print(msg_4)
+    answer = input()
+
+    if answer == "y":
+        if is_one_digit(result):
+            msg_index = 10
+            while True:
+                print(globals()["msg_" + str(msg_index)])
+                answer = input()
+                if answer == "y":
+                    if msg_index < 12:
+                        msg_index = msg_index + 1
+                    else:
+                        memory = result
+                        break
+                elif answer == "n":
+                    break
+                else:
+                    continue
+        else:
+            memory = result
+        print(msg_5)
+        answer = input()
+
+        if answer == "y":
+            continue
+        else:
+            break
+    elif answer == "n":
+        print(msg_5)
+        answer = input()
+
+        if answer == "y":
+            continue
+        else:
+            break
+    else:
+        continue
+        
